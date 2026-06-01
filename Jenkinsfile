@@ -6,6 +6,12 @@ pipeline {
     }
 
     stages {
+        stage('Kill Existing Mock Server') {
+            steps {
+                bat 'taskkill /F /IM node.exe || exit /b 0'
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 bat 'call npm install'
@@ -21,7 +27,7 @@ pipeline {
         stage('Start Mock Server') {
             steps {
                 bat 'start "" /B node server.js'
-                bat 'timeout /t 3 /nobreak'
+                bat 'powershell -NoProfile -Command "Start-Sleep -Seconds 3"'
             }
         }
 
